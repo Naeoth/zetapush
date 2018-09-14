@@ -5,7 +5,7 @@ const path = require('path');
 const cosmiconfig = require('cosmiconfig');
 // Local
 const { DEFAULTS, log, error, warn, trace } = require('@zetapush/common');
-const { getDeveloperPassword } = require('../utils/security');
+const { getDeveloperLogin, getDeveloperPassword } = require('../utils/security');
 const explorer = cosmiconfig('zeta');
 
 /**
@@ -43,7 +43,9 @@ const fromEnv = async () => {
     appName: process.env.ZP_SANDBOX_ID,
     developerLogin: process.env.ZP_USERNAME,
     developerPassword: process.env.ZP_PASSWORD,
-    workerServiceId: process.env.ZP_WORKER_SERVICE_ID
+    workerServiceId: process.env.ZP_WORKER_SERVICE_ID,
+    npmRegistry: process.env.NPM_REGISTRY,
+    TS_NODE_SKIP_IGNORE: process.env.TS_NODE_SKIP_IGNORE
   });
 };
 
@@ -58,7 +60,9 @@ const fromCli = async (command) => {
     appName: command.parent.appName,
     developerLogin: command.parent.developerLogin,
     developerPassword: command.parent.developerPassword,
-    workerServiceId: command.parent.ZP_WORKER_SERVICE_ID
+    workerServiceId: command.parent.ZP_WORKER_SERVICE_ID,
+    npmRegistry: command.registry,
+    TS_NODE_SKIP_IGNORE: command.skipIgnore
   });
 };
 
@@ -69,7 +73,9 @@ const fromCli = async (command) => {
 const fromDefault = async () => {
   trace('Using default values');
   return Promise.resolve({
-    platformUrl: DEFAULTS.PLATFORM_URL
+    platformUrl: DEFAULTS.PLATFORM_URL,
+    npmRegistry: DEFAULTS.NPM_REGISTRY_URL,
+    TS_NODE_SKIP_IGNORE: DEFAULTS.TS_NODE_SKIP_IGNORE
   });
 };
 
